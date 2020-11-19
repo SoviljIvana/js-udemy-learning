@@ -1,12 +1,4 @@
 /*
-GAME RULES:
-- The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-
-
 CHALLENGE
 Change the game to follow these rules:
 1. A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable)
@@ -24,6 +16,8 @@ firstPlayerCurrentScore = 0;
 secondPlayerCurrentScore = 0;
 firstPlayerGlobalScore = 0;
 secondPlayerGlobalScore = 0;
+var sumOfRundomNumbers = 0;
+var maxScore = 20;
 refresh();
 
 /***
@@ -31,11 +25,13 @@ refresh();
  */
 document.querySelector(".btn-roll").addEventListener("click", function () {
   var randomNumber = Math.floor(Math.random() * 6) + 1;
+  var randomNumber1 = Math.floor(Math.random() * 6) + 1;
+  console.log(randomNumber, randomNumber1);
   if (document.querySelector(".player-0-panel").classList.contains("active")) {
-    if (firstPlayerGlobalScore >= 20 || secondPlayerGlobalScore >= 20) {
-      if (firstPlayerGlobalScore >= 20 ){
+    if (firstPlayerGlobalScore >= maxScore || secondPlayerGlobalScore >= maxScore) {
+      if (firstPlayerGlobalScore >= maxScore ){
         document.getElementById("name-0").textContent = "Winner";
-      }else if(secondPlayerGlobalScore >= 20){
+      }else if(secondPlayerGlobalScore >= maxScore){
         document.getElementById("name-1").textContent = "Winner";
       }
       document.querySelector(".player-0-panel").classList.remove("active");
@@ -43,26 +39,44 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
       document.querySelector(".btn-roll").style.display = "none";
       document.querySelector(".btn-hold").style.display = "none";
     } else {
-      if (randomNumber === 1) {
+      if (randomNumber === 1 || randomNumber1 === 1) {
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
         document.getElementById("current-0").textContent = "0";
         firstPlayerCurrentScore = 0;
+        alert('The player looses his current score when one of them is a 1. Sorry!');
         nextPlayer();
-      } else {
+
+      }else if(randomNumber === 6 && randomNumber1 === 6) {
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
-        firstPlayerCurrentScore += randomNumber;
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
+        document.getElementById("current-0").textContent = "0";
+        firstPlayerGlobalScore = 0;
+        firstPlayerCurrentScore = 0;
+        document.getElementById("score-0").textContent = "0";
+        document.getElementById("current-0").textContent = "0";
+        nextPlayer();
+      }else {
+        document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
+        document.querySelector(".dice").style.display = "block";
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
+        sumOfRundomNumbers = randomNumber + randomNumber1;
+        firstPlayerCurrentScore += sumOfRundomNumbers;
         document.getElementById(
           "current-0"
         ).textContent = firstPlayerCurrentScore;
       }
     }
   } else {
-    if (secondPlayerGlobalScore >= 20 || firstPlayerGlobalScore >= 20) {
-      if (firstPlayerGlobalScore >= 20 ){
+    if (secondPlayerGlobalScore >= maxScore || firstPlayerGlobalScore >= maxScore) {
+      if (firstPlayerGlobalScore >= maxScore ){
         document.getElementById("name-0").textContent = "Winner";
-      }else if(secondPlayerGlobalScore >= 20){
+      }else if(secondPlayerGlobalScore >= maxScore){
         document.getElementById("name-1").textContent = "Winner";
       }
       document.querySelector(".player-0-panel").classList.remove("active");
@@ -70,16 +84,34 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
       document.querySelector(".btn-roll").style.display = "none";
       document.querySelector(".btn-hold").style.display = "none";
     }  else {
-      if (randomNumber === 1) {
+      if (randomNumber === 1 || randomNumber1 === 1){
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
-        document.getElementById("current-1").textContent = "0";
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
+    
         secondPlayerCurrentScore = 0;
+        alert('The player looses his current score when one of them is a 1. Sorry!');
+
+        nextPlayer();
+        document.getElementById("current-1").textContent = "0";
+      } else if(randomNumber === 6 && randomNumber1 === 6) {
+        document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
+        document.querySelector(".dice").style.display = "block";
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
+        document.getElementById("current-0").textContent = "0";
+        secondPlayerGlobalScore = 0;
+        secondPlayerCurrentScore = 0;
+        document.getElementById("current-1").textContent = "0";
         nextPlayer();
       } else {
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
-        secondPlayerCurrentScore += randomNumber;
+        document.querySelector(".dice1").src = "dice-" + randomNumber1 + ".png";
+        document.querySelector(".dice1").style.display = "block";
+        sumOfRundomNumbers = randomNumber + randomNumber1;
+        secondPlayerCurrentScore += sumOfRundomNumbers;
         document.getElementById(
           "current-1"
         ).textContent = secondPlayerCurrentScore;
@@ -87,6 +119,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
     }
   }
 });
+
 
 /****
  * On click hold button, players can set current score to global score
@@ -98,6 +131,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document.getElementById("score-0").textContent = firstPlayerGlobalScore;
     document.getElementById("current-0").textContent = "0";
     document.querySelector(".dice").style.display = "none";
+    document.querySelector(".dice1").style.display = "none";
     firstPlayerCurrentScore = 0;
     nextPlayer();
   } else {
@@ -105,6 +139,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document.getElementById("score-1").textContent = secondPlayerGlobalScore;
     document.getElementById("current-1").textContent = "0";
     document.querySelector(".dice").style.display = "none";
+    document.querySelector(".dice1").style.display = "none";
     secondPlayerCurrentScore = 0;
     nextPlayer();
   }
@@ -117,12 +152,14 @@ function nextPlayer() {
   if (document.querySelector(".player-0-panel").classList.contains("active")) {
     if (document.getElementById("current-0").textContent === "0") {
       document.querySelector(".dice").style.display = "none";
+      document.querySelector(".dice1").style.display = "none";
       document.querySelector(".player-0-panel").classList.remove("active");
       document.querySelector(".player-1-panel").classList.toggle("active");
     }
   } else {
     if (document.getElementById("current-0").textContent === "0") {
       document.querySelector(".dice").style.display = "none";
+      document.querySelector(".dice1").style.display = "none";
       document.querySelector(".player-0-panel").classList.toggle("active");
       document.querySelector(".player-1-panel").classList.remove("active");
     }
@@ -138,7 +175,8 @@ document.querySelector(".btn-new").addEventListener("click", function () {
     secondPlayerCurrentScore,
     firstPlayerGlobalScore,
     secondPlayerGlobalScore = 0;
-  document.querySelector(".dice").style.display = "block";
+  document.querySelector(".dice").style.display = "none";
+  document.querySelector(".dice1").style.display = "none";
   document.querySelector(".btn-roll").style.display = "block";
   document.querySelector(".btn-hold").style.display = "block";
 });
@@ -154,5 +192,20 @@ function refresh() {
   document.getElementById("name-0").textContent = "Player 1";
   document.getElementById("name-1").textContent = "Player 2";
   document.querySelector(".dice").style.display = "none";
+  document.querySelector(".dice1").style.display = "none";
+
 }
+
+document.querySelector('.max-score').addEventListener('click', function(){
+  var x = document.getElementById("myInput").value;
+  maxScore = x;
+
+})
+
+
+
+
+
+
+
 
