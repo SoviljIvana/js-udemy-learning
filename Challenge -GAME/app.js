@@ -128,11 +128,11 @@ function nextPlayer() {
  */
 document.querySelector(".btn-new").addEventListener("click", function () {
   refresh();
-  firstPlayerCurrentScore,
-    secondPlayerCurrentScore,
-    firstPlayerGlobalScore,
+  firstPlayerCurrentScore = 0,
+    secondPlayerCurrentScore = 0,
+    firstPlayerGlobalScore = 0,
     secondPlayerGlobalScore = 0;
-  document.querySelector(".dice").style.display = "block";
+  document.querySelector(".dice").style.display = "none";
   document.querySelector(".btn-roll").style.display = "block";
   document.querySelector(".btn-hold").style.display = "block";
 });
