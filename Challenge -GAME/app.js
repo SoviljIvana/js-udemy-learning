@@ -51,6 +51,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
         document.getElementById("current-0").textContent = "0";
+        firstPlayerCurrentScore = 0;
         //second player
         nextPlayer();
       } else {
@@ -80,6 +81,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
         document.querySelector(".dice").src = "dice-" + randomNumber + ".png";
         document.querySelector(".dice").style.display = "block";
         document.getElementById("current-1").textContent = "0";
+        secondPlayerCurrentScore = 0;
         //second player
         nextPlayer();
       } else {
@@ -112,20 +114,37 @@ function nextPlayer() {
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
   if (document.querySelector(".player-0-panel").classList.contains("active")) {
-    firstPlayerGlobalScore = +firstPlayerCurrentScore;
-    console.log(firstPlayerGlobalScore);
+    firstPlayerGlobalScore += firstPlayerCurrentScore;
     document.getElementById("score-0").textContent = firstPlayerGlobalScore;
     document.getElementById("current-0").textContent = "0";
     document.querySelector(".dice").style.display = "none";
+    firstPlayerCurrentScore = 0;
+
     nextPlayer();
   } else {
-    secondPlayerGlobalScore = +secondPlayerCurrentScore;
+    secondPlayerGlobalScore += secondPlayerCurrentScore;
     console.log(secondPlayerGlobalScore);
     document.getElementById("score-1").textContent = secondPlayerGlobalScore;
     document.getElementById("current-1").textContent = "0";
     document.querySelector(".dice").style.display = "none";
+    secondPlayerCurrentScore = 0;
     nextPlayer();
   }
+});
+
+document.querySelector(".btn-new").addEventListener("click", function () {
+  firstPlayerCurrentScore = 0;
+  secondPlayerCurrentScore = 0;
+  firstPlayerGlobalScore = 0;
+  secondPlayerGlobalScore = 0;
+  document.getElementById("score-0").textContent = "0";
+  document.getElementById("score-1").textContent = "0";
+  document.getElementById("current-0").textContent = "0";
+  document.getElementById("current-1").textContent = "0";
+  document.getElementById("name-0").textContent = "Player 1";
+  document.getElementById("name-1").textContent = "Player 2";
+  document.querySelector(".btn-roll").style.display = "block";
+  document.querySelector(".btn-hold").style.display = "block";
 });
 
 /*
