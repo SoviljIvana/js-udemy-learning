@@ -22,6 +22,7 @@ HINT: Use some of the ES6 features:
 classes, subclasses, template strings, default parameters, maps, arrow functions, destructuring, etc.
  */
 
+
 class Element {
   constructor(name, buildYear) {
     this.name = name;
@@ -108,3 +109,4 @@ function reportStreets(s) {
 
 reportPark(allParks);
 reportStreets(allStreets);
+
